@@ -4,7 +4,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Rpa_Aec.Domain.Entities;
 using Rpa_Aec.Domain.Model;
-using Rpa_Aec.Repository;
 using Rpa_Aec.Repository.Entities.Interfaces;
 using Rpa_Aec.Services.Interfaces;
 using System;
