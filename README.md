@@ -7,6 +7,7 @@ Codigo feito na abordagem DDD com foco no dominio, que nesse caso é o objeto de
 <h1>Execução</h1>
 Para executar o projeto é simples, tenha certeza que você possui o SQL Server instalado na sua maquina.
 Opós isso, sera necessario criar uma base de dados com o nome <b>RPA_AEC</b>. Conforme imagem:
+
 ![image](https://user-images.githubusercontent.com/14313148/228533086-5b113f9a-7ca0-4c53-84ba-09fe967af94c.png)
 
 Após isso executar o comando <b>update-database</b>. Eu executo pelo Package Manager Console desta maneira:
