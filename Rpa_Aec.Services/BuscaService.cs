@@ -20,8 +20,10 @@ namespace Rpa_Aec.Services
         private readonly IBuscaRepository _buscaRepository;
         private readonly IMapper _mapper;
 
-
         private const string Url = "https://www.aec.com.br/";
+        private const string BuscaVazia = "Busca vazia";
+        private const string SemResultado = "Sem resultados";
+
         public BuscaService(IBuscaRepository buscaRepository, IMapper mapper)
         {
             _buscaRepository = buscaRepository;
@@ -40,12 +42,15 @@ namespace Rpa_Aec.Services
 
         private ICollection<BuscaModel> BuscaPalavra(string busca)
         {
+            IWebDriver chromeDriver = new ChromeDriver(Environment.CurrentDirectory);
+
             try
             {
                 if (busca == string.Empty)
-                    throw new ArgumentNullException();
+                {
+                    throw new ArgumentNullException(BuscaVazia);
+                }
 
-                IWebDriver chromeDriver = new ChromeDriver(Environment.CurrentDirectory);
                 chromeDriver.Navigate().GoToUrl(Url);
                 chromeDriver.Manage().Window.Maximize();
 
@@ -54,12 +59,28 @@ namespace Rpa_Aec.Services
 
                 return elementosDaBusca;
             }
-            catch (Exception)
+            catch (ArgumentNullException e) when (e.Message.Contains(BuscaVazia))
             {
+                Console.WriteLine(e.Message);
                 return default;
                 throw;
             }
-
+            catch (NotFoundException e) when (e.Message.Contains(SemResultado))
+            {
+                Console.WriteLine(e.Message);
+                return default;
+                throw;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return default;
+                throw;
+            }
+            finally
+            {
+                chromeDriver.Close();
+            }
         }
 
         private static ICollection<BuscaModel> LeElementos(IWebDriver chromeDriver)
@@ -70,6 +91,11 @@ namespace Rpa_Aec.Services
             var titulos = chromeDriver.FindElements(By.ClassName("tres-linhas")).ToArray();
             var detalhes = chromeDriver.FindElements(By.XPath("//small")).ToArray();
             var descricoes = chromeDriver.FindElements(By.ClassName("duas-linhas")).ToArray();
+
+            if (areas.Length == 0)
+            {
+                throw new NotFoundException(SemResultado);
+            }
 
             for (int i = 0; i < areas.Length; i++)
             {
@@ -88,9 +114,18 @@ namespace Rpa_Aec.Services
 
         private static void AbreEPesquisaNaBarraDeBusca(string busca, IWebDriver chromeDriver)
         {
-            chromeDriver.FindElement(By.ClassName("buscar")).Click();
-            chromeDriver.FindElement(By.Name("s")).SendKeys(busca);
-            chromeDriver.FindElement(By.ClassName("me-3")).Click();
+            try
+            {
+                chromeDriver.FindElement(By.ClassName("buscar")).Click();
+                chromeDriver.FindElement(By.Name("s")).SendKeys(busca);
+                chromeDriver.FindElement(By.ClassName("me-3")).Click();
+            }
+            catch (NoSuchElementException e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+            
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

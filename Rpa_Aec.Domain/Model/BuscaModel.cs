@@ -28,7 +28,7 @@ namespace Rpa_Aec.Domain.Model
 
             var dataValida = DateTime.TryParse(dataString, out var dataFormatada);
 
-            return dataValida? dataFormatada : DateTime.MinValue;
+            return dataValida ? dataFormatada : DateTime.MinValue;
         }
     }
 }
