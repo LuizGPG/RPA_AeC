@@ -4,4 +4,13 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EasyCronJob.Abstractions" Version="2.1.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rpa_Aec.Repository\Rpa_Aec.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

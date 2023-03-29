@@ -3,7 +3,6 @@ using Rpa_Aec.Repository.Entities;
 using Rpa_Aec.Repository.Entities.Interfaces;
 using Rpa_Aec.Services;
 using Rpa_Aec.Services.Interfaces;
-using System;
 
 namespace Rpa_Aec.Infra
 {

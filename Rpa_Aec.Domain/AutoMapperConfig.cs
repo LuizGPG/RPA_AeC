@@ -8,7 +8,7 @@ namespace Rpa_Aec.Domain
         {
             return new MapperConfiguration((config) =>
             {
-                config.AddProfile(new OrganizationProfile());
+                config.AddProfile(new RpaProfile());
             });
         }
     }
